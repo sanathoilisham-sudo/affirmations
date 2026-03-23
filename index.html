@@ -10,21 +10,15 @@ body{background:#0d0d0d;color:#e8dfc8;font-family:Georgia,serif;overflow-x:hidde
 #app{padding-bottom:70px;}
 .page{display:none;padding:0 16px;}
 .page.active{display:block;}
-
-/* NAV */
 nav{position:fixed;bottom:0;left:0;right:0;height:60px;background:#0a0800;border-top:1px solid #5a4020;display:flex;z-index:100;}
 nav button{flex:1;background:none;border:none;color:#8a7d5e;font-family:Georgia,serif;font-size:10px;letter-spacing:1px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;}
 nav button .i{font-size:22px;}
 nav button.on{color:#c9a84c;}
-
-/* HOME */
 .hdr{text-align:center;padding:36px 0 20px;border-bottom:1px solid #5a4020;margin-bottom:18px;}
 .hdr .sub{font-size:11px;letter-spacing:3px;color:#c9a84c;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:8px;}
 .hdr h1{font-size:27px;font-weight:normal;}
 .hdr h1 em{color:#c9a84c;}
 .hint{text-align:center;font-size:10px;letter-spacing:2px;color:#8a7d5e;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:10px;}
-
-/* SPOTLIGHT */
 .sc{background:#181410;border:1px solid #5a4020;border-radius:12px;padding:30px 18px 22px;margin-bottom:14px;position:relative;text-align:center;touch-action:pan-y;user-select:none;-webkit-user-select:none;}
 .sc::before{content:'\201C';position:absolute;top:-4px;left:10px;font-size:90px;color:#c9a84c;opacity:.1;line-height:1;}
 .slbl{font-size:10px;letter-spacing:2px;color:#c9a84c;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:12px;}
@@ -36,19 +30,13 @@ nav button.on{color:#c9a84c;}
 .dot.on{background:#c9a84c;transform:scale(1.4);}
 .prog{height:2px;background:#5a4020;border-radius:2px;margin-top:12px;overflow:hidden;}
 .prog div{height:100%;background:#c9a84c;width:0%;}
-
-/* SPOTLIGHT BUTTONS */
 .snav{display:flex;gap:10px;justify-content:center;margin-top:12px;}
 .snav button{background:#181410;border:1px solid #5a4020;color:#c9a84c;font-size:20px;width:52px;height:52px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .snav button:active{background:#c9a84c;color:#000;}
-
-/* STATS */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
 .stat{background:#181410;border:1px solid #5a4020;border-radius:10px;padding:16px 8px;text-align:center;}
 .stn{font-size:26px;color:#c9a84c;display:block;}
 .stl{font-size:9px;letter-spacing:1.5px;color:#8a7d5e;font-family:Arial,sans-serif;text-transform:uppercase;display:block;margin-top:3px;}
-
-/* BROWSE */
 .ptitle{font-size:22px;font-style:italic;padding:26px 0 14px;}
 .search{width:100%;background:#110e06;border:1px solid #5a4020;color:#e8dfc8;font-size:16px;padding:13px 15px;border-radius:10px;outline:none;font-family:Arial,sans-serif;margin-bottom:12px;-webkit-appearance:none;appearance:none;}
 .search:focus{border-color:#c9a84c;}
@@ -67,44 +55,24 @@ nav button.on{color:#c9a84c;}
 .ccat{font-size:9px;letter-spacing:2px;color:#c9a84c;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:7px;}
 .ctxt{font-size:15px;line-height:1.7;font-style:italic;}
 .cauth{font-size:11px;color:#8a7d5e;font-family:Arial,sans-serif;margin-top:7px;}
-
-/* TOPICS */
 .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .tc{background:#181410;border:1px solid #5a4020;border-radius:12px;padding:22px 12px;text-align:center;cursor:pointer;}
 .tc:active{border-color:#c9a84c;background:#1e1a10;}
 .ti{font-size:28px;margin-bottom:8px;}
 .tn{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif;margin-bottom:6px;}
 .tc-n{font-size:22px;color:#c9a84c;}
-
-/* FAB */
 .fab{position:fixed;bottom:74px;right:16px;width:52px;height:52px;background:#c9a84c;border:none;border-radius:50%;font-size:24px;color:#000;cursor:pointer;box-shadow:0 4px 18px rgba(201,168,76,.4);z-index:90;display:flex;align-items:center;justify-content:center;}
 .fab:active{transform:scale(.88);}
-
-/* AUDIO */
 .speak-btn{background:#181410;border:1px solid #5a4020;color:#c9a84c;font-size:20px;width:52px;height:52px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .speak-btn:active{background:#c9a84c;color:#000;}
 .speak-btn.loading{opacity:.5;pointer-events:none;}
 .speak-btn.playing{background:#c9a84c;color:#000;border-color:#c9a84c;}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;}
-.modal-bg.hidden{display:none;}
-.modal{background:#181410;border:1px solid #5a4020;border-radius:14px;padding:28px 22px;width:100%;max-width:340px;}
-.modal h3{font-size:16px;font-weight:normal;font-style:italic;color:#c9a84c;margin-bottom:8px;}
-.modal p{font-size:13px;color:#8a7d5e;font-family:Arial,sans-serif;line-height:1.5;margin-bottom:16px;}
-.modal input{width:100%;background:#0d0d0d;border:1px solid #5a4020;color:#e8dfc8;font-size:14px;padding:12px 14px;border-radius:8px;outline:none;font-family:Arial,sans-serif;margin-bottom:14px;}
-.modal input:focus{border-color:#c9a84c;}
-.modal-btns{display:flex;gap:10px;}
-.mbtn{flex:1;padding:12px;border-radius:8px;font-family:Arial,sans-serif;font-size:13px;cursor:pointer;border:1px solid #5a4020;}
-.mbtn-save{background:#c9a84c;color:#000;font-weight:bold;border-color:#c9a84c;}
-.mbtn-cancel{background:none;color:#8a7d5e;}
-/* TOAST */
 .toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);background:#c9a84c;color:#000;font-size:12px;letter-spacing:1.5px;font-family:Arial,sans-serif;text-transform:uppercase;padding:10px 22px;border-radius:24px;z-index:200;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .3s;}
 .toast.show{opacity:1;}
 </style>
 </head>
 <body>
 <div id="app">
-
-  <!-- HOME -->
   <div class="page active" id="pg-home">
     <div class="hdr">
       <div class="sub">Daily Practice · Mind · Growth</div>
@@ -130,8 +98,6 @@ nav button.on{color:#c9a84c;}
       <div class="stat"><span class="stn">3</span><span class="stl">Authors</span></div>
     </div>
   </div>
-
-  <!-- BROWSE -->
   <div class="page" id="pg-browse">
     <div class="ptitle">Browse All</div>
     <input class="search" type="search" id="srch" placeholder="Search affirmations..." oninput="renderList()" autocomplete="off">
@@ -140,39 +106,19 @@ nav button.on{color:#c9a84c;}
     <div class="clist" id="clist"></div>
     <br><br>
   </div>
-
-  <!-- TOPICS -->
   <div class="page" id="pg-topics">
     <div class="ptitle">Topics</div>
     <div class="tgrid" id="tgrid"></div>
     <br><br>
   </div>
-
 </div>
-
 <nav>
   <button class="on" id="nb-home" onclick="goPage('home')"><span class="i">&#127775;</span>Today</button>
   <button id="nb-browse" onclick="goPage('browse')"><span class="i">&#128220;</span>Browse</button>
   <button id="nb-topics" onclick="goPage('topics')"><span class="i">&#128193;</span>Topics</button>
 </nav>
-
-
-<!-- API KEY MODAL -->
-<div class="modal-bg hidden" id="modalBg">
-  <div class="modal">
-    <h3>ElevenLabs API Key</h3>
-    <p>Enter your ElevenLabs API key to enable audio. It is saved only on this device.</p>
-    <input type="password" id="apiKeyInput" placeholder="sk-...your key here...">
-    <div class="modal-btns">
-      <button class="mbtn mbtn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="mbtn mbtn-save" onclick="saveKey()">Save &amp; Speak</button>
-    </div>
-  </div>
-</div>
-
 <button class="fab" onclick="doShare()">&#8679;</button>
 <div class="toast" id="toast"></div>
-
 <script>
 var D=[
 {c:"Mindset",t:"I use positive affirmations to influence my subconscious mind and shape my reality. My thoughts and words have the power to create the life I desire."},
@@ -243,17 +189,14 @@ var D=[
 {c:"Discipline",t:"I act first. I speak last. I let my work reveal my law."},
 {c:"Discipline",t:"I no longer announce. I execute. I no longer explain. I build. I no longer need permission. I have power."}
 ];
-
 var ICONS={Mindset:"&#129504;",Purpose:"&#127919;",Faith:"&#128591;",Persistence:"&#128170;",Planning:"&#128203;",Creativity:"&#128161;",Relationships:"&#129309;",Growth:"&#127807;",Focus:"&#128269;",Abundance:"&#10024;",Discipline:"&#9876;"};
 var CATS=["All"];
 D.forEach(function(d){if(CATS.indexOf(d.c)<0)CATS.push(d.c);});
-
 var idx=Math.floor(Math.random()*D.length);
 var activeCat="All";
 var playing=true;
 var timer=null;
 var SPEED=8000;
-
 function goPage(name){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('on');});
@@ -263,7 +206,6 @@ function goPage(name){
   if(name==='browse'){buildChips();renderList();}
   if(name==='topics')renderTopics();
 }
-
 function showCard(animate){
   var el=document.getElementById('sTxt');
   var cat=document.getElementById('sCat');
@@ -276,7 +218,6 @@ function showCard(animate){
     buildDots();
   },animate?200:0);
 }
-
 function buildDots(){
   var w=document.getElementById('sDots');
   w.innerHTML='';
@@ -290,10 +231,8 @@ function buildDots(){
     w.appendChild(d);
   }
 }
-
 function next(){idx=(idx+1)%D.length;showCard(true);if(playing)resetTimer();}
 function prev(){idx=(idx-1+D.length)%D.length;showCard(true);if(playing)resetTimer();}
-
 function startTimer(){
   stopTimer();
   var bar=document.getElementById('sBar');
@@ -304,21 +243,17 @@ function startTimer(){
   },30);
   timer=setTimeout(function(){next();},SPEED);
 }
-
 function stopTimer(){
   clearTimeout(timer);
   var bar=document.getElementById('sBar');
   bar.style.transition='none';bar.style.width='0%';
 }
-
 function resetTimer(){if(playing)startTimer();}
-
 function togglePlay(){
   playing=!playing;
   document.getElementById('playBtn').innerHTML=playing?'&#9646;&#9646;':'&#9654;';
   playing?startTimer():stopTimer();
 }
-
 var sx=0,sy=0;
 document.getElementById('sCard').addEventListener('touchstart',function(e){
   sx=e.touches[0].clientX;sy=e.touches[0].clientY;
@@ -328,7 +263,6 @@ document.getElementById('sCard').addEventListener('touchend',function(e){
   var dy=e.changedTouches[0].clientY-sy;
   if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){if(dx<0)next();else prev();}
 },{passive:true});
-
 function buildChips(){
   var bar=document.getElementById('chips');
   bar.innerHTML='';
@@ -345,7 +279,6 @@ function buildChips(){
     bar.appendChild(b);
   });
 }
-
 function renderList(){
   var q=(document.getElementById('srch').value||'').toLowerCase();
   var f=D.filter(function(d){
@@ -361,7 +294,6 @@ function renderList(){
     list.appendChild(el);
   });
 }
-
 function renderTopics(){
   var g=document.getElementById('tgrid');
   g.innerHTML='';
@@ -376,7 +308,6 @@ function renderTopics(){
     g.appendChild(el);
   });
 }
-
 function doShare(){
   var d=D[idx];
   var txt='"'+d.t+'"'+(d.a?'\n- '+d.a:'')+'\n\n#PositiveAffirmations';
@@ -384,33 +315,28 @@ function doShare(){
   else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){showToast('Copied!');});}
   else{showToast('Long-press to copy');}
 }
-
 function showToast(msg){
   var el=document.getElementById('toast');
   el.textContent=msg;el.classList.add('show');
   setTimeout(function(){el.classList.remove('show');},2000);
 }
-
 document.getElementById('stTotal').textContent=D.length;
 document.getElementById('stTopics').textContent=(function(){var s=[];D.forEach(function(d){if(s.indexOf(d.c)<0)s.push(d.c);});return s.length;})();
 showCard(false);
 startTimer();
-
-var XI_KEY=localStorage.getItem('xi_key')||'';
+var XI_KEY='';
 var XI_VOICE='pNInz6obpgDQGcFmaJgB';
 var audioObj=null;
-
 function speakCard(){
   if(audioObj){audioObj.pause();audioObj=null;resetSpeakBtn();return;}
-  if(!XI_KEY){
-    var k=prompt('Paste your ElevenLabs API key:');
-    if(!k)return;
-    XI_KEY=k.trim();
-    localStorage.setItem('xi_key',XI_KEY);
-  }
+  var saved=localStorage.getItem('xi_key');
+  if(saved){XI_KEY=saved;doSpeak();return;}
+  var k=prompt('Paste your ElevenLabs API key:');
+  if(!k)return;
+  XI_KEY=k.trim();
+  localStorage.setItem('xi_key',XI_KEY);
   doSpeak();
 }
-
 function doSpeak(){
   var btn=document.getElementById('speakBtn');
   var txt=D[idx].t;
@@ -422,9 +348,7 @@ function doSpeak(){
     body:JSON.stringify({text:txt,model_id:'eleven_flash_v2_5',voice_settings:{stability:0.5,similarity_boost:0.75}})
   })
   .then(function(r){
-    if(!r.ok){
-      return r.text().then(function(t){throw new Error(r.status+': '+t);});
-    }
+    if(!r.ok){return r.text().then(function(t){throw new Error(r.status+': '+t);});}
     return r.blob();
   })
   .then(function(blob){
@@ -438,18 +362,17 @@ function doSpeak(){
   })
   .catch(function(e){
     resetSpeakBtn();
+    localStorage.removeItem('xi_key');
+    XI_KEY='';
     showToast(e.message.substring(0,60));
-    console.error('ElevenLabs error:',e.message);
   });
 }
-
 function resetSpeakBtn(){
   var btn=document.getElementById('speakBtn');
   btn.classList.remove('loading','playing');
   btn.innerHTML='&#128266;';
   audioObj=null;
 }
-
 var _orig=showCard;
 showCard=function(a){if(audioObj){audioObj.pause();audioObj=null;resetSpeakBtn();}_orig(a);};
 </script>

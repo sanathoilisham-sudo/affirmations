@@ -324,9 +324,11 @@ document.getElementById('stTotal').textContent=D.length;
 document.getElementById('stTopics').textContent=(function(){var s=[];D.forEach(function(d){if(s.indexOf(d.c)<0)s.push(d.c);});return s.length;})();
 showCard(false);
 startTimer();
+
 var XI_KEY='';
 var XI_VOICE='pNInz6obpgDQGcFmaJgB';
 var audioObj=null;
+
 function speakCard(){
   if(audioObj){audioObj.pause();audioObj=null;resetSpeakBtn();return;}
   var saved=localStorage.getItem('xi_key');
@@ -337,6 +339,7 @@ function speakCard(){
   localStorage.setItem('xi_key',XI_KEY);
   doSpeak();
 }
+
 function doSpeak(){
   var btn=document.getElementById('speakBtn');
   var txt=D[idx].t;
@@ -348,7 +351,7 @@ function doSpeak(){
     body:JSON.stringify({text:txt,model_id:'eleven_flash_v2_5',voice_settings:{stability:0.5,similarity_boost:0.75}})
   })
   .then(function(r){
-    if(!r.ok){return r.text().then(function(t){throw new Error(r.status+': '+t);});}
+    if(!r.ok){return r.text().then(function(t){throw new Error(r.status+':'+t);});}
     return r.blob();
   })
   .then(function(blob){
@@ -362,17 +365,47 @@ function doSpeak(){
   })
   .catch(function(e){
     resetSpeakBtn();
-    localStorage.removeItem('xi_key');
-    XI_KEY='';
-    showToast(e.message.substring(0,60));
+    var msg=e.message||'';
+    // Only wipe the key if it's actually an auth error
+    if(msg.indexOf('401')>=0||msg.indexOf('403')>=0){
+      localStorage.removeItem('xi_key');
+      XI_KEY='';
+      showToast('Invalid key — tap speaker to re-enter');
+    } else {
+      showToast('Error: '+msg.substring(0,40));
+    }
   });
 }
+
 function resetSpeakBtn(){
   var btn=document.getElementById('speakBtn');
   btn.classList.remove('loading','playing');
   btn.innerHTML='&#128266;';
   audioObj=null;
 }
+
+// Long-press speaker button (800ms) to clear saved key
+var _speakHold=null;
+var _speakBtn=document.getElementById('speakBtn');
+_speakBtn.addEventListener('touchstart',function(e){
+  _speakHold=setTimeout(function(){
+    // prevent the click from also firing
+    _speakBtn.addEventListener('click',function _once(ev){ev.stopImmediatePropagation();_speakBtn.removeEventListener('click',_once);},{capture:true,once:true});
+    localStorage.removeItem('xi_key');
+    XI_KEY='';
+    showToast('Key cleared — tap to enter new key');
+  },800);
+},{passive:true});
+_speakBtn.addEventListener('touchend',function(){clearTimeout(_speakHold);},{passive:true});
+_speakBtn.addEventListener('touchmove',function(){clearTimeout(_speakHold);},{passive:true});
+// Desktop: right-click to clear key
+_speakBtn.addEventListener('contextmenu',function(e){
+  e.preventDefault();
+  localStorage.removeItem('xi_key');
+  XI_KEY='';
+  showToast('Key cleared — tap to enter new key');
+});
+
 var _orig=showCard;
 showCard=function(a){if(audioObj){audioObj.pause();audioObj=null;resetSpeakBtn();}_orig(a);};
 </script>

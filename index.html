@@ -325,89 +325,32 @@ document.getElementById('stTopics').textContent=(function(){var s=[];D.forEach(f
 showCard(false);
 startTimer();
 
-var XI_KEY='';
-var XI_VOICE='pNInz6obpgDQGcFmaJgB';
-var audioObj=null;
-
 function speakCard(){
-  if(audioObj){audioObj.pause();audioObj=null;resetSpeakBtn();return;}
-  var saved=localStorage.getItem('xi_key');
-  if(saved){XI_KEY=saved;doSpeak();return;}
-  var k=prompt('Paste your ElevenLabs API key:');
-  if(!k)return;
-  XI_KEY=k.trim();
-  localStorage.setItem('xi_key',XI_KEY);
-  doSpeak();
-}
-
-function doSpeak(){
-  var btn=document.getElementById('speakBtn');
-  var txt=D[idx].t;
-  btn.classList.add('loading');
-  btn.innerHTML='&#9203;';
-  fetch('https://api.elevenlabs.io/v1/text-to-speech/'+XI_VOICE,{
-    method:'POST',
-    headers:{'xi-api-key':XI_KEY,'Content-Type':'application/json','Accept':'audio/mpeg'},
-    body:JSON.stringify({text:txt,model_id:'eleven_flash_v2_5',voice_settings:{stability:0.5,similarity_boost:0.75}})
-  })
-  .then(function(r){
-    if(!r.ok){return r.text().then(function(t){throw new Error(r.status+':'+t);});}
-    return r.blob();
-  })
-  .then(function(blob){
-    var url=URL.createObjectURL(blob);
-    audioObj=new Audio(url);
-    btn.classList.remove('loading');
-    btn.classList.add('playing');
-    btn.innerHTML='&#9646;&#9646;';
-    audioObj.play();
-    audioObj.onended=function(){resetSpeakBtn();URL.revokeObjectURL(url);};
-  })
-  .catch(function(e){
+  if(!window.speechSynthesis){showToast('TTS not supported');return;}
+  if(window.speechSynthesis.speaking){
+    window.speechSynthesis.cancel();
     resetSpeakBtn();
-    var msg=e.message||'';
-    // Only wipe the key if it's actually an auth error
-    if(msg.indexOf('401')>=0||msg.indexOf('403')>=0){
-      localStorage.removeItem('xi_key');
-      XI_KEY='';
-      showToast('Invalid key — tap speaker to re-enter');
-    } else {
-      showToast('Error: '+msg.substring(0,40));
-    }
-  });
+    return;
+  }
+  var btn=document.getElementById('speakBtn');
+  var utt=new SpeechSynthesisUtterance(D[idx].t);
+  utt.rate=0.88;
+  utt.pitch=1;
+  utt.volume=1;
+  utt.onstart=function(){btn.classList.add('playing');btn.innerHTML='&#9646;&#9646;';};
+  utt.onend=function(){resetSpeakBtn();};
+  utt.onerror=function(){resetSpeakBtn();};
+  window.speechSynthesis.speak(utt);
 }
 
 function resetSpeakBtn(){
   var btn=document.getElementById('speakBtn');
   btn.classList.remove('loading','playing');
   btn.innerHTML='&#128266;';
-  audioObj=null;
 }
 
-// Long-press speaker button (800ms) to clear saved key
-var _speakHold=null;
-var _speakBtn=document.getElementById('speakBtn');
-_speakBtn.addEventListener('touchstart',function(e){
-  _speakHold=setTimeout(function(){
-    // prevent the click from also firing
-    _speakBtn.addEventListener('click',function _once(ev){ev.stopImmediatePropagation();_speakBtn.removeEventListener('click',_once);},{capture:true,once:true});
-    localStorage.removeItem('xi_key');
-    XI_KEY='';
-    showToast('Key cleared — tap to enter new key');
-  },800);
-},{passive:true});
-_speakBtn.addEventListener('touchend',function(){clearTimeout(_speakHold);},{passive:true});
-_speakBtn.addEventListener('touchmove',function(){clearTimeout(_speakHold);},{passive:true});
-// Desktop: right-click to clear key
-_speakBtn.addEventListener('contextmenu',function(e){
-  e.preventDefault();
-  localStorage.removeItem('xi_key');
-  XI_KEY='';
-  showToast('Key cleared — tap to enter new key');
-});
-
 var _orig=showCard;
-showCard=function(a){if(audioObj){audioObj.pause();audioObj=null;resetSpeakBtn();}_orig(a);};
+showCard=function(a){if(window.speechSynthesis&&window.speechSynthesis.speaking){window.speechSynthesis.cancel();resetSpeakBtn();}_orig(a);};
 </script>
 </body>
 </html>

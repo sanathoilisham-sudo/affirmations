@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Positive Affirmations</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0d0d0d;color:#e8dfc8;font-family:Georgia,serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
+#app{padding-bottom:70px;}
+.page{display:none;padding:0 16px;}
+.page.active{display:block;}
+
+/* NAV */
+nav{position:fixed;bottom:0;left:0;right:0;height:60px;background:#0a0800;border-top:1px solid #5a4020;display:flex;z-index:100;}
+nav button{flex:1;background:none;border:none;color:#8a7d5e;font-family:Georgia,serif;font-size:10px;letter-spacing:1px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;}
+nav button .i{font-size:22px;}
+nav button.on{color:#c9a84c;}
+
+/* HOME */
+.hdr{text-align:center;padding:36px 0 20px;border-bottom:1px solid #5a4020;margin-bottom:18px;}
+.hdr .sub{font-size:11px;letter-spacing:3px;color:#c9a84c;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:8px;}
+.hdr h1{font-size:27px;font-weight:normal;}
+.hdr h1 em{color:#c9a84c;}
+.hint{text-align:center;font-size:10px;letter-spacing:2px;color:#8a7d5e;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:10px;}
+
+/* SPOTLIGHT */
+.sc{background:#181410;border:1px solid #5a4020;border-radius:12px;padding:30px 18px 22px;margin-bottom:14px;position:relative;text-align:center;touch-action:pan-y;user-select:none;-webkit-user-select:none;}
+.sc::before{content:'\201C';position:absolute;top:-4px;left:10px;font-size:90px;color:#c9a84c;opacity:.1;line-height:1;}
+.slbl{font-size:10px;letter-spacing:2px;color:#c9a84c;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:12px;}
+.stxt{font-size:17px;line-height:1.75;font-style:italic;min-height:88px;transition:opacity .2s;}
+.stxt.fade{opacity:0;}
+.scat{font-size:10px;letter-spacing:2px;color:#8a7d5e;font-family:Arial,sans-serif;text-transform:uppercase;margin-top:12px;}
+.dots{display:flex;justify-content:center;gap:5px;margin-top:12px;}
+.dot{width:6px;height:6px;border-radius:50%;background:#5a4020;}
+.dot.on{background:#c9a84c;transform:scale(1.4);}
+.prog{height:2px;background:#5a4020;border-radius:2px;margin-top:12px;overflow:hidden;}
+.prog div{height:100%;background:#c9a84c;width:0%;}
+
+/* SPOTLIGHT BUTTONS */
+.snav{display:flex;gap:10px;justify-content:center;margin-top:12px;}
+.snav button{background:#181410;border:1px solid #5a4020;color:#c9a84c;font-size:20px;width:52px;height:52px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.snav button:active{background:#c9a84c;color:#000;}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
+.stat{background:#181410;border:1px solid #5a4020;border-radius:10px;padding:16px 8px;text-align:center;}
+.stn{font-size:26px;color:#c9a84c;display:block;}
+.stl{font-size:9px;letter-spacing:1.5px;color:#8a7d5e;font-family:Arial,sans-serif;text-transform:uppercase;display:block;margin-top:3px;}
+
+/* BROWSE */
+.ptitle{font-size:22px;font-style:italic;padding:26px 0 14px;}
+.search{width:100%;background:#110e06;border:1px solid #5a4020;color:#e8dfc8;font-size:16px;padding:13px 15px;border-radius:10px;outline:none;font-family:Arial,sans-serif;margin-bottom:12px;-webkit-appearance:none;appearance:none;}
+.search:focus{border-color:#c9a84c;}
+.search::placeholder{color:#8a7d5e;}
+.chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:10px;margin-bottom:10px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;background:none;border:1px solid #5a4020;color:#8a7d5e;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 15px;border-radius:20px;cursor:pointer;font-family:Arial,sans-serif;white-space:nowrap;}
+.chip.on{background:#c9a84c;border-color:#c9a84c;color:#000;font-weight:bold;}
+.rcount{font-size:10px;letter-spacing:2px;color:#8a7d5e;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:8px;}
+.clist{display:flex;flex-direction:column;gap:2px;}
+.ci{background:#181410;padding:20px 15px;}
+.ci:first-child{border-radius:10px 10px 0 0;}
+.ci:last-child{border-radius:0 0 10px 10px;}
+.ci:only-child{border-radius:10px;}
+.ci:active{background:#1e1a10;}
+.ccat{font-size:9px;letter-spacing:2px;color:#c9a84c;font-family:Arial,sans-serif;text-transform:uppercase;margin-bottom:7px;}
+.ctxt{font-size:15px;line-height:1.7;font-style:italic;}
+.cauth{font-size:11px;color:#8a7d5e;font-family:Arial,sans-serif;margin-top:7px;}
+
+/* TOPICS */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tc{background:#181410;border:1px solid #5a4020;border-radius:12px;padding:22px 12px;text-align:center;cursor:pointer;}
+.tc:active{border-color:#c9a84c;background:#1e1a10;}
+.ti{font-size:28px;margin-bottom:8px;}
+.tn{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif;margin-bottom:6px;}
+.tc-n{font-size:22px;color:#c9a84c;}
+
+/* FAB */
+.fab{position:fixed;bottom:74px;right:16px;width:52px;height:52px;background:#c9a84c;border:none;border-radius:50%;font-size:24px;color:#000;cursor:pointer;box-shadow:0 4px 18px rgba(201,168,76,.4);z-index:90;display:flex;align-items:center;justify-content:center;}
+.fab:active{transform:scale(.88);}
+
+/* AUDIO */
+.speak-btn{background:#181410;border:1px solid #5a4020;color:#c9a84c;font-size:20px;width:52px;height:52px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.speak-btn:active{background:#c9a84c;color:#000;}
+.speak-btn.loading{opacity:.5;pointer-events:none;}
+.speak-btn.playing{background:#c9a84c;color:#000;border-color:#c9a84c;}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;}
+.modal-bg.hidden{display:none;}
+.modal{background:#181410;border:1px solid #5a4020;border-radius:14px;padding:28px 22px;width:100%;max-width:340px;}
+.modal h3{font-size:16px;font-weight:normal;font-style:italic;color:#c9a84c;margin-bottom:8px;}
+.modal p{font-size:13px;color:#8a7d5e;font-family:Arial,sans-serif;line-height:1.5;margin-bottom:16px;}
+.modal input{width:100%;background:#0d0d0d;border:1px solid #5a4020;color:#e8dfc8;font-size:14px;padding:12px 14px;border-radius:8px;outline:none;font-family:Arial,sans-serif;margin-bottom:14px;}
+.modal input:focus{border-color:#c9a84c;}
+.modal-btns{display:flex;gap:10px;}
+.mbtn{flex:1;padding:12px;border-radius:8px;font-family:Arial,sans-serif;font-size:13px;cursor:pointer;border:1px solid #5a4020;}
+.mbtn-save{background:#c9a84c;color:#000;font-weight:bold;border-color:#c9a84c;}
+.mbtn-cancel{background:none;color:#8a7d5e;}
+/* TOAST */
+.toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);background:#c9a84c;color:#000;font-size:12px;letter-spacing:1.5px;font-family:Arial,sans-serif;text-transform:uppercase;padding:10px 22px;border-radius:24px;z-index:200;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .3s;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HOME -->
+  <div class="page active" id="pg-home">
+    <div class="hdr">
+      <div class="sub">Daily Practice · Mind · Growth</div>
+      <h1>Positive <em>Affirmations</em></h1>
+    </div>
+    <p class="hint">&#8592; swipe card to navigate &#8594;</p>
+    <div class="sc" id="sCard">
+      <div class="slbl">&#10022; Affirmation of the Moment</div>
+      <div class="stxt" id="sTxt"></div>
+      <div class="scat" id="sCat"></div>
+      <div class="dots" id="sDots"></div>
+      <div class="prog"><div id="sBar"></div></div>
+    </div>
+    <div class="snav">
+      <button onclick="prev()">&#8592;</button>
+      <button onclick="togglePlay()" id="playBtn">&#9646;&#9646;</button>
+      <button onclick="next()">&#8594;</button>
+      <button class="speak-btn" id="speakBtn" onclick="speakCard()">&#128266;</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="stn" id="stTotal"></span><span class="stl">Total</span></div>
+      <div class="stat"><span class="stn" id="stTopics"></span><span class="stl">Topics</span></div>
+      <div class="stat"><span class="stn">3</span><span class="stl">Authors</span></div>
+    </div>
+  </div>
+
+  <!-- BROWSE -->
+  <div class="page" id="pg-browse">
+    <div class="ptitle">Browse All</div>
+    <input class="search" type="search" id="srch" placeholder="Search affirmations..." oninput="renderList()" autocomplete="off">
+    <div class="chips" id="chips"></div>
+    <div class="rcount" id="rcount"></div>
+    <div class="clist" id="clist"></div>
+    <br><br>
+  </div>
+
+  <!-- TOPICS -->
+  <div class="page" id="pg-topics">
+    <div class="ptitle">Topics</div>
+    <div class="tgrid" id="tgrid"></div>
+    <br><br>
+  </div>
+
+</div>
+
+<nav>
+  <button class="on" id="nb-home" onclick="goPage('home')"><span class="i">&#127775;</span>Today</button>
+  <button id="nb-browse" onclick="goPage('browse')"><span class="i">&#128220;</span>Browse</button>
+  <button id="nb-topics" onclick="goPage('topics')"><span class="i">&#128193;</span>Topics</button>
+</nav>
+
+
+<!-- API KEY MODAL -->
+<div class="modal-bg hidden" id="modalBg">
+  <div class="modal">
+    <h3>ElevenLabs API Key</h3>
+    <p>Enter your ElevenLabs API key to enable audio. It is saved only on this device.</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-...your key here...">
+    <div class="modal-btns">
+      <button class="mbtn mbtn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="mbtn mbtn-save" onclick="saveKey()">Save &amp; Speak</button>
+    </div>
+  </div>
+</div>
+
+<button class="fab" onclick="doShare()">&#8679;</button>
+<div class="toast" id="toast"></div>
+
+<script>
+var D=[
+{c:"Mindset",t:"I use positive affirmations to influence my subconscious mind and shape my reality. My thoughts and words have the power to create the life I desire."},
+{c:"Mindset",t:"We become what we think about. A man is what he thinks about all day long."},
+{c:"Mindset",t:"The greatest discovery of my generation is that a human being can change their life by altering the attitude of their mind.",a:"William James"},
+{c:"Mindset",t:"Everything is our mindset - faith, belief, positivity, peace, optimism, imagination, goals, persistence, environment, relationships, and success."},
+{c:"Mindset",t:"I am in control of my thoughts, and I choose positivity, peace, and optimism."},
+{c:"Mindset",t:"I think big, dream big, and believe in the vast possibilities ahead."},
+{c:"Mindset",t:"Above all, don't worry. Worry brings fear, and fear is crippling."},
+{c:"Mindset",t:"My confidence is unshakable, and I believe in my ability to achieve greatness."},
+{c:"Mindset",t:"I confidently think for myself and critically evaluate popular beliefs to uncover true opportunities."},
+{c:"Purpose",t:"I have a clear and definite purpose in my life, guiding my actions and decisions. My goals are well defined, providing direction and focus in everything I do."},
+{c:"Purpose",t:"My goals are not just aspirations. They are inevitable realities in the making."},
+{c:"Purpose",t:"Success is a progressive realization of what is ideal - knowing what I'm doing, why I'm doing it, and where I'm going."},
+{c:"Purpose",t:"I am the architect of my destiny. My thoughts and actions build a bright future."},
+{c:"Purpose",t:"A journey of a thousand miles begins with a single step."},
+{c:"Purpose",t:"People who get on in this world get up and look for the circumstances they want, and if they can't find them, make them."},
+{c:"Faith",t:"I believe in my ability to achieve success and overcome any obstacles. Faith is my driving force, propelling me toward my goals with unwavering confidence."},
+{c:"Faith",t:"Belief in myself and my dreams fuels my determination and persistence."},
+{c:"Faith",t:"Ask and it shall be given. Seek and you shall find. Knock, and it shall be opened unto you."},
+{c:"Persistence",t:"Nothing in this world can take the place of persistence. Talent won't. Genius won't. Education won't. Only persistence will succeed."},
+{c:"Persistence",t:"I am resilient in the face of challenges, and persistence is my key to victory. Every setback is an opportunity to showcase my determination."},
+{c:"Persistence",t:"Consistency is the field that transforms potential into success."},
+{c:"Persistence",t:"I embrace setbacks as opportunities for growth and learning. Every difficulty I face helps me become a better version of myself."},
+{c:"Persistence",t:"Growth occurs when we push beyond our comfort zone, especially when we persist despite feeling low or unmotivated."},
+{c:"Persistence",t:"Defeats are temporary setbacks - opportunities for learning and victory."},
+{c:"Persistence",t:"Every challenge is an opportunity for growth, and I face them with resilience."},
+{c:"Planning",t:"I am dedicated to acquiring and applying specialized knowledge in my field. Continuous learning and expertise are the keys to my success."},
+{c:"Planning",t:"I plan my actions strategically, ensuring a clear path to my goals. Organized planning is the foundation of my success journey."},
+{c:"Planning",t:"I make decisions confidently and promptly, moving forward with conviction. Each decision aligns with my vision for success."},
+{c:"Planning",t:"I prioritize actions by considering their urgency, importance, and the ultimate result they contribute."},
+{c:"Planning",t:"I think strategically, always keeping the desired outcomes in mind and how each action contributes to my goals."},
+{c:"Creativity",t:"My imagination is a source of endless creativity and innovative ideas. I harness its power to solve problems and envision success."},
+{c:"Creativity",t:"I see creativity as the ability to discover and explore all possible options, then choose the best one to achieve the desired outcome."},
+{c:"Creativity",t:"I start thinking creatively by considering a greater number of options and looking for the best answer out of many."},
+{c:"Creativity",t:"I am a problem solver. I approach challenges with creativity and intelligence."},
+{c:"Creativity",t:"Necessity is the mother of invention."},
+{c:"Relationships",t:"I surround myself with supportive and like-minded people who form a powerful mastermind group."},
+{c:"Relationships",t:"I build strong, positive relationships with everyone I encounter."},
+{c:"Relationships",t:"I communicate effectively, building bridges and fostering collaboration."},
+{c:"Relationships",t:"I genuinely care about others, actively listening and showing interest in their concerns."},
+{c:"Relationships",t:"My smile is a powerful tool, creating a positive atmosphere and enhancing my interactions."},
+{c:"Relationships",t:"Remembering names comes naturally to me, making people feel recognized and valued."},
+{c:"Relationships",t:"I focus on constructive feedback, avoiding criticism, and highlighting the positive."},
+{c:"Relationships",t:"Never say someone is wrong. Talk from the other person's perspective. Seek understanding, not victory."},
+{c:"Relationships",t:"I choose harmony over argument, seeking common ground and understanding."},
+{c:"Relationships",t:"Unselfish thinking lets me become part of something much bigger than myself. People are more important than profits."},
+{c:"Relationships",t:"I am open to listening, valuing others' ideas, and embracing collaboration over competition."},
+{c:"Relationships",t:"I don't need to be the best in the room - I focus on coordinating everyone to bring out the best results."},
+{c:"Growth",t:"I am committed to recognizing both my strengths and weaknesses, continually seeking self-awareness to guide my personal growth."},
+{c:"Growth",t:"Admitting mistakes is a sign of strength. I embrace my humanity and learn from every experience."},
+{c:"Growth",t:"Empathy is a sign of strength. I understand and appreciate different viewpoints, building stronger connections."},
+{c:"Growth",t:"Every day, in every way, I'm getting better and better."},
+{c:"Growth",t:"This day is a new opportunity, and I greet it with enthusiasm and gratitude."},
+{c:"Growth",t:"Growth does not happen automatically. If you want to grow, you have to be intentional."},
+{c:"Growth",t:"Make a commitment to intentionally grow."},
+{c:"Growth",t:"The opposite of courage in our society is not cowardice - it is conformity.",a:"Rollo May"},
+{c:"Focus",t:"Where is my focus? On things I have, not things I'm missing. On things I can control. On the present moment."},
+{c:"Focus",t:"I choose to be proactive in all situations, responding with thoughtfulness and care."},
+{c:"Focus",t:"I practice empathetic listening by being fully present and responsive to the feelings and needs of those I communicate with."},
+{c:"Focus",t:"Excuses have no place in my mindset. I find solutions and make things happen."},
+{c:"Focus",t:"When others share their challenges with me, I see it as an opportunity to practice empathetic listening."},
+{c:"Abundance",t:"Our team is selling more than 1,000 jars a day and earning more than Rs.6 lakhs a month. We attract more customers, exceed our goals, and achieve remarkable financial success."},
+{c:"Abundance",t:"Rich people don't work for money - they work for assets. Lower liabilities, invest in assets.",a:"Robert T. Kiyosaki"},
+{c:"Abundance",t:"Be on constant high alert for good ideas, regardless of how likely or unlikely the source.",a:"Jeffrey J. Fox"},
+{c:"Abundance",t:"If you want to succeed in the real world, start thinking realistically - then act with everything you have."},
+{c:"Discipline",t:"I keep silent until my work is law. I do not explain. I execute."},
+{c:"Discipline",t:"I act first. I speak last. I let my work reveal my law."},
+{c:"Discipline",t:"I no longer announce. I execute. I no longer explain. I build. I no longer need permission. I have power."}
+];
+
+var ICONS={Mindset:"&#129504;",Purpose:"&#127919;",Faith:"&#128591;",Persistence:"&#128170;",Planning:"&#128203;",Creativity:"&#128161;",Relationships:"&#129309;",Growth:"&#127807;",Focus:"&#128269;",Abundance:"&#10024;",Discipline:"&#9876;"};
+var CATS=["All"];
+D.forEach(function(d){if(CATS.indexOf(d.c)<0)CATS.push(d.c);});
+
+var idx=Math.floor(Math.random()*D.length);
+var activeCat="All";
+var playing=true;
+var timer=null;
+var SPEED=8000;
+
+function goPage(name){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('pg-'+name).classList.add('active');
+  document.getElementById('nb-'+name).classList.add('on');
+  document.getElementById('app').scrollTop=0;
+  if(name==='browse'){buildChips();renderList();}
+  if(name==='topics')renderTopics();
+}
+
+function showCard(animate){
+  var el=document.getElementById('sTxt');
+  var cat=document.getElementById('sCat');
+  if(animate){el.classList.add('fade');}
+  setTimeout(function(){
+    var d=D[idx];
+    el.textContent=d.t;
+    cat.textContent=d.c+(d.a?' · '+d.a:'');
+    el.classList.remove('fade');
+    buildDots();
+  },animate?200:0);
+}
+
+function buildDots(){
+  var w=document.getElementById('sDots');
+  w.innerHTML='';
+  var n=9,half=Math.floor(n/2);
+  var s=Math.max(0,idx-half);
+  var e=Math.min(D.length-1,s+n-1);
+  s=Math.max(0,e-n+1);
+  for(var i=s;i<=e;i++){
+    var d=document.createElement('div');
+    d.className='dot'+(i===idx?' on':'');
+    w.appendChild(d);
+  }
+}
+
+function next(){idx=(idx+1)%D.length;showCard(true);if(playing)resetTimer();}
+function prev(){idx=(idx-1+D.length)%D.length;showCard(true);if(playing)resetTimer();}
+
+function startTimer(){
+  stopTimer();
+  var bar=document.getElementById('sBar');
+  bar.style.transition='none';bar.style.width='0%';
+  setTimeout(function(){
+    bar.style.transition='width '+SPEED+'ms linear';
+    bar.style.width='100%';
+  },30);
+  timer=setTimeout(function(){next();},SPEED);
+}
+
+function stopTimer(){
+  clearTimeout(timer);
+  var bar=document.getElementById('sBar');
+  bar.style.transition='none';bar.style.width='0%';
+}
+
+function resetTimer(){if(playing)startTimer();}
+
+function togglePlay(){
+  playing=!playing;
+  document.getElementById('playBtn').innerHTML=playing?'&#9646;&#9646;':'&#9654;';
+  playing?startTimer():stopTimer();
+}
+
+var sx=0,sy=0;
+document.getElementById('sCard').addEventListener('touchstart',function(e){
+  sx=e.touches[0].clientX;sy=e.touches[0].clientY;
+},{passive:true});
+document.getElementById('sCard').addEventListener('touchend',function(e){
+  var dx=e.changedTouches[0].clientX-sx;
+  var dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){if(dx<0)next();else prev();}
+},{passive:true});
+
+function buildChips(){
+  var bar=document.getElementById('chips');
+  bar.innerHTML='';
+  CATS.forEach(function(cat){
+    var b=document.createElement('button');
+    b.className='chip'+(cat===activeCat?' on':'');
+    b.textContent=cat;
+    b.onclick=function(){
+      activeCat=cat;
+      document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      renderList();
+    };
+    bar.appendChild(b);
+  });
+}
+
+function renderList(){
+  var q=(document.getElementById('srch').value||'').toLowerCase();
+  var f=D.filter(function(d){
+    return(activeCat==='All'||d.c===activeCat)&&(!q||d.t.toLowerCase().indexOf(q)>=0||d.c.toLowerCase().indexOf(q)>=0);
+  });
+  document.getElementById('rcount').textContent=f.length+' affirmation'+(f.length!==1?'s':'');
+  var list=document.getElementById('clist');
+  list.innerHTML='';
+  f.forEach(function(item){
+    var el=document.createElement('div');
+    el.className='ci';
+    el.innerHTML='<div class="ccat">'+item.c+'</div><div class="ctxt">'+item.t+'</div>'+(item.a?'<div class="cauth">— '+item.a+'</div>':'');
+    list.appendChild(el);
+  });
+}
+
+function renderTopics(){
+  var g=document.getElementById('tgrid');
+  g.innerHTML='';
+  var cats=[];
+  D.forEach(function(d){if(cats.indexOf(d.c)<0)cats.push(d.c);});
+  cats.forEach(function(cat){
+    var count=D.filter(function(d){return d.c===cat;}).length;
+    var el=document.createElement('div');
+    el.className='tc';
+    el.innerHTML='<div class="ti">'+(ICONS[cat]||'&#128205;')+'</div><div class="tn">'+cat+'</div><div class="tc-n">'+count+'</div>';
+    el.onclick=function(){activeCat=cat;goPage('browse');};
+    g.appendChild(el);
+  });
+}
+
+function doShare(){
+  var d=D[idx];
+  var txt='"'+d.t+'"'+(d.a?'\n- '+d.a:'')+'\n\n#PositiveAffirmations';
+  if(navigator.share){navigator.share({title:'Positive Affirmation',text:txt});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){showToast('Copied!');});}
+  else{showToast('Long-press to copy');}
+}
+
+function showToast(msg){
+  var el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  setTimeout(function(){el.classList.remove('show');},2000);
+}
+
+document.getElementById('stTotal').textContent=D.length;
+document.getElementById('stTopics').textContent=(function(){var s=[];D.forEach(function(d){if(s.indexOf(d.c)<0)s.push(d.c);});return s.length;})();
+showCard(false);
+startTimer();
+
+var XI_KEY=localStorage.getItem('xi_key')||'';
+var XI_VOICE='pNInz6obpgDQGcFmaJgB';
+var audioObj=null;
+
+function speakCard(){
+  if(audioObj){audioObj.pause();audioObj=null;resetSpeakBtn();return;}
+  if(!XI_KEY){
+    var k=prompt('Paste your ElevenLabs API key:');
+    if(!k)return;
+    XI_KEY=k.trim();
+    localStorage.setItem('xi_key',XI_KEY);
+  }
+  doSpeak();
+}
+
+function doSpeak(){
+  var btn=document.getElementById('speakBtn');
+  var txt=D[idx].t;
+  btn.classList.add('loading');
+  btn.innerHTML='&#9203;';
+  fetch('https://api.elevenlabs.io/v1/text-to-speech/'+XI_VOICE,{
+    method:'POST',
+    headers:{'xi-api-key':XI_KEY,'Content-Type':'application/json','Accept':'audio/mpeg'},
+    body:JSON.stringify({text:txt,model_id:'eleven_flash_v2_5',voice_settings:{stability:0.5,similarity_boost:0.75}})
+  })
+  .then(function(r){
+    if(!r.ok){
+      return r.text().then(function(t){throw new Error(r.status+': '+t);});
+    }
+    return r.blob();
+  })
+  .then(function(blob){
+    var url=URL.createObjectURL(blob);
+    audioObj=new Audio(url);
+    btn.classList.remove('loading');
+    btn.classList.add('playing');
+    btn.innerHTML='&#9646;&#9646;';
+    audioObj.play();
+    audioObj.onended=function(){resetSpeakBtn();URL.revokeObjectURL(url);};
+  })
+  .catch(function(e){
+    resetSpeakBtn();
+    showToast(e.message.substring(0,60));
+    console.error('ElevenLabs error:',e.message);
+  });
+}
+
+function resetSpeakBtn(){
+  var btn=document.getElementById('speakBtn');
+  btn.classList.remove('loading','playing');
+  btn.innerHTML='&#128266;';
+  audioObj=null;
+}
+
+var _orig=showCard;
+showCard=function(a){if(audioObj){audioObj.pause();audioObj=null;resetSpeakBtn();}_orig(a);};
+</script>
+</body>
+</html>
